@@ -67,7 +67,7 @@ Lalu masukkan kode berikut (Sudah menggunakan MongoDB 4.4 untuk menghindari erro
 ```bash
 services:
   mongodb:
-    image: mongo:4.4  # Ubah bagian ini
+    image: mongo:4.4
     container_name: genieacs-mongodb
     restart: always
     volumes:
@@ -108,7 +108,7 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     environment:
-      - JWT_SECRET=your-secret-key-here
+      - JWT_SECRET=baztech_data_global # Ganti dengan secret yang kuat
       - JWT_EXPIRES_IN=1h
       - REFRESH_TOKEN_EXPIRES_IN=7d
       - add_wan=yes
