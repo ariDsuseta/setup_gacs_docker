@@ -69,19 +69,19 @@ services:
   mongodb:
     image: mongo:4.4  # Ubah bagian ini
     container_name: genieacs-mongodb
-    restart: unless-stopped
+    restart: always
     volumes:
       - mongo_data:/data/db
 
   redis:
     image: redis:6.2-alpine
     container_name: genieacs-redis
-    restart: unless-stopped
+    restart: always
 
   genieacs:
     image: drumsergio/genieacs:1.2.16.0
     container_name: genieacs-services
-    restart: unless-stopped
+    restart: always
     depends_on:
       - mongodb
       - redis
@@ -113,7 +113,7 @@ services:
       - REFRESH_TOKEN_EXPIRES_IN=7d
       - add_wan=yes
       - NODE_ENV=production
-    restart: unless-stopped
+    restart: always
 
 volumes:
   mongo_data:
