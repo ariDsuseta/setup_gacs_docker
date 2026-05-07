@@ -1,0 +1,10 @@
+# Masuk ke folder script kamu
+cd path/to/your/scripts/
+
+# Loop semua file .js dan kirim ke GenieACS
+for file in *.js; do
+  param_name=$(basename "$file" .js)
+  curl -i 'http://localhost:7557/virtual_parameters/'$param_name \
+    -X PUT \
+    --data-binary @"$file"
+done
