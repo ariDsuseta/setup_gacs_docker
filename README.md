@@ -59,4 +59,69 @@ Buat folder khusus agar data tidak berantakan:
 mkdir ~/genieacs-docker && cd ~/genieacs-docker
 ```
 ### 3: Membuat Konfigurasi Docker Compose
-Buat file docker-compose.yml:
+Buat file `docker-compose.yml`:
+```bash
+nano docker-compose.yml
+```
+Lalu masukkan kode berikut (Sudah menggunakan MongoDB 4.4 untuk menghindari error AVX):
+```bash
+services:
+  mongodb:
+    image: mongo:4.4  # Ubah bagian ini
+    container_name: genieacs-mongodb
+    restart: always
+    volumes:
+      - mongo_data:/data/db
+
+  redis:
+    image: redis:6.2-alpine
+    container_name: genieacs-redis
+    restart: always
+
+  genieacs:
+    image: drumsergio/genieacs:1.2.16.0
+    container_name: genieacs-services
+    restart: always
+    depends_on:
+      - mongodb
+      - redis
+    environment:
+      - GENIEACS_MONGODB_CONNECTION_URL=mongodb://mongodb:27017/genieacs
+      - GENIEACS_REDIS_CONNECTION_URL=redis://redis:6379/0
+      - GENIEACS_UI_JWT_SECRET=baztech_data_global # Ganti dengan secret yang kuat
+      - GENIEACS_FS_IP=0.0.0.0
+      - GENIEACS_CWMP_ACCESS_LOG_FILE=/var/log/genieacs/genieacs-cwmp-access.log
+    ports:
+      - "7547:7547"   # CWMP
+      - "7557:7557"   # NBI
+      - "7567:7567"   # FS (File Server)
+      - "3000:3000"   # UI (Dashboard)
+    volumes:
+      - genieacs_data:/opt/genieacs/ext
+      - genieacs_logs:/var/log/genieacs
+
+  genieacs-panel-api:
+    image: solusidigitalnet/genieacspanelapi:latest
+    container_name: genieacs-panel-api
+    ports:
+      - "1996:1997"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      - JWT_SECRET=your-secret-key-here
+      - JWT_EXPIRES_IN=1h
+      - REFRESH_TOKEN_EXPIRES_IN=7d
+      - add_wan=yes
+      - NODE_ENV=production
+    restart: unless-stopped
+
+volumes:
+  mongo_data:
+  genieacs_data:
+  genieacs_logs:
+```
+### 4: Menjalankan GenieACS
+Eksekusi perintah berikut untuk menarik image dan menjalankan container:
+```bash
+docker compose up -d
+```
