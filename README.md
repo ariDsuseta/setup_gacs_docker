@@ -52,3 +52,11 @@ Konfigurasi ini menjalankan 3 container utama:
 ```bash
 sudo apt update && sudo apt install -y docker.io docker-compose
 sudo systemctl enable --now docker
+```
+### 2: Membuat Direktori Project
+Buat folder khusus agar data tidak berantakan:
+```bash
+mkdir ~/genieacs-docker && cd ~/genieacs-docker
+```
+### 3: Membuat Konfigurasi Docker Compose
+Buat file docker-compose.yml:
