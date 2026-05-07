@@ -1,19 +1,54 @@
-# 🚀 GenieACS v1.2 Docker Setup (AVX Optimized)
+# 🚀 GenieACS v1.2 Stack - Docker Deployment
 
-Repositori ini berisi panduan dan file konfigurasi untuk menjalankan **GenieACS** menggunakan Docker Compose. Konfigurasi ini telah disesuaikan untuk berjalan di server dengan CPU yang tidak mendukung instruksi AVX (menggunakan MongoDB 4.4).
+[![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
+[![GenieACS](https://img.shields.io/badge/GenieACS-1.2.16-orange?style=for-the-badge)](https://genieacs.com/)
+[![Debian](https://img.shields.io/badge/Debian-A81D33?style=for-the-badge&logo=debian&logoColor=white)](https://www.debian.org/)
 
----
-
-## 🛠️ Komponen Stack
-* **GenieACS 1.2.16.0**: Main service (CWMP, NBI, FS, UI).
-* **MongoDB 4.4**: Database (Versi stabil untuk CPU lama/VPS murah).
-* **Redis 6.2**: Cache broker untuk meningkatkan performa.
+Panduan lengkap instalasi GenieACS v1.2 menggunakan Docker Compose di lingkungan Debian. Konfigurasi ini telah dioptimalkan untuk performa stabil dan kompatibilitas CPU lama (Non-AVX).
 
 ---
 
-## 📦 Cara Instalasi
+## 📑 Daftar Isi
+1. [Fitur Utama](#-fitur-utama)
+2. [Prasyarat](#-prasyarat)
+3. [Arsitektur Container](#-arsitektur-container)
+4. [Langkah Instalasi](#-langkah-instalasi)
+5. [Konfigurasi Router (CPE)](#-konfigurasi-router-cpe)
+6. [Manajemen Virtual Parameters](#-manajemen-virtual-parameters)
+7. [Troubleshooting](#-troubleshooting)
 
-### 1. Persiapan Direktori
-Login ke Debian kamu dan jalankan:
+---
+
+## ✨ Fitur Utama
+* **Kompatibilitas Luas**: Menggunakan MongoDB 4.4 agar bisa berjalan di VPS/Server tanpa instruksi CPU AVX.
+* **Auto-Healing**: Kebijakan `restart: always` memastikan service hidup kembali setelah server reboot atau mati listrik.
+* **Storage Terpisah**: Data database dan logs dipisahkan ke dalam Docker Volumes agar aman saat update image.
+* **Full Stack**: Termasuk CWMP, Northbound API, File Server, dan User Interface.
+
+---
+
+## 📋 Prasyarat
+* OS: Debian 10/11/12 atau Ubuntu 20.04+.
+* RAM: Minimal 2GB (Rekomendasi 4GB).
+* Port Terbuka:
+  * `3000` (Web Dashboard)
+  * `7547` (CWMP - Komunikasi Router)
+  * `7557` (NBI - API Interface)
+  * `7567` (FS - File Server untuk Firmware Update)
+
+---
+
+## 🏗️ Arsitektur Container
+Konfigurasi ini menjalankan 3 container utama:
+1. **GenieACS Services**: Menjalankan core aplikasi.
+2. **MongoDB 4.4**: Database untuk menyimpan data perangkat dan konfigurasi.
+3. **Redis 6.2**: Cache broker untuk mempercepat respons komunikasi CWMP.
+
+---
+
+## 🚀 Langkah Instalasi
+
+### 1. Update Sistem & Install Docker
 ```bash
-mkdir genieacs-docker && cd genieacs-docker
+sudo apt update && sudo apt install -y docker.io docker-compose
+sudo systemctl enable --now docker
