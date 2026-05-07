@@ -69,19 +69,19 @@ services:
   mongodb:
     image: mongo:4.4  # Ubah bagian ini
     container_name: genieacs-mongodb
-    restart: always
+    restart: unless-stopped
     volumes:
       - mongo_data:/data/db
 
   redis:
     image: redis:6.2-alpine
     container_name: genieacs-redis
-    restart: always
+    restart: unless-stopped
 
   genieacs:
     image: drumsergio/genieacs:1.2.16.0
     container_name: genieacs-services
-    restart: always
+    restart: unless-stopped
     depends_on:
       - mongodb
       - redis
@@ -124,4 +124,9 @@ volumes:
 Eksekusi perintah berikut untuk menarik image dan menjalankan container:
 ```bash
 docker compose up -d
+```
+### 5: Verifikasi Status
+Pastikan semua container berstatus Up:
+```bash
+docker compose ps
 ```
