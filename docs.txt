@@ -1,4 +1,6 @@
-# Masuk ke folder script kamu
+git clone https://github.com/EtherGig/genieacs-config.git
+
+# Masuk ke folder script cloning
 cd path/to/your/scripts/
 
 # Loop semua file .js dan kirim ke GenieACS
@@ -8,3 +10,5 @@ for file in *.js; do
     -X PUT \
     --data-binary @"$file"
 done
+
+yang lain tinggal copas di link : https://github.com/EtherGig/genieacs-config.git
