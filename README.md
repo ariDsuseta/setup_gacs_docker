@@ -131,11 +131,11 @@ Pastikan semua container berstatus Up:
 docker compose ps
 ```
 ---
-### 🔒 5. Keamanan
+### 🔒 6. Keamanan
 * Segera ganti GENIEACS_UI_JWT_SECRET di file docker-compose.yml.
 * Jangan biarkan port 7557 terbuka untuk publik tanpa firewall (hanya untuk internal API).
 * Gunakan Reverse Proxy (seperti Nginx) jika ingin mengaktifkan SSL/HTTPS.
 ---
-### 🌍 6. Akses
+### 🌍 7. Akses
 * `gacs` : (IP_HOST:3000)
 * `g-dashboard` : (IP-HOST:1996)
