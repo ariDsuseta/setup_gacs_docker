@@ -137,5 +137,5 @@ docker compose ps
 * Gunakan Reverse Proxy (seperti Nginx) jika ingin mengaktifkan SSL/HTTPS.
 ---
 ### 🌍 6. Akses
-`gacs` : IP_HOST:3000
-`g-dashboard` : IP-HOST:1996
+* `gacs` : (IP_HOST:3000)
+* `g-dashboard` : (IP-HOST:1996)
